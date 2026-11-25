@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- `snapshot-input` 可离线重放本地 YouTube API snapshot，复用视频解析、视频筛选、频道查重和 Excel 导出。命令不访问网络，不发信，不写飞书；隐藏或缺失的订阅数保持 UNKNOWN，短名单默认最多 10 条且 `ready_to_send=no`。
+
 ## [0.3.0] - 2026-09-27
 
 ### Added

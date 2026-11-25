@@ -92,6 +92,12 @@ python main.py feishu-setup --dry-run
 python main.py batch --keywords-file keywords.txt --no-feishu
 ```
 
+已有 YouTube API 响应、但不想再请求 YouTube、飞书或发信时，用离线 snapshot 入口重放本地筛选、查重和导出。它不是在线端到端通过。说明和合成样例见[离线 snapshot](docs/snapshot_offline.md)。
+
+```bash
+python main.py snapshot-input --input tests/fixtures/snapshot_offline_synthetic.json --strong-ids tests/fixtures/snapshot_offline_strong_ids.csv --brand-exclusion tests/fixtures/snapshot_offline_brands.json --theme-keywords-file tests/fixtures/snapshot_offline_theme.txt --output-dir /tmp/snapshot-offline-demo
+```
+
 ## 搜索与采集
 
 ```bash

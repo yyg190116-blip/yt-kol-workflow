@@ -1232,6 +1232,29 @@ def build_parser() -> argparse.ArgumentParser:
     # ---- quota ----
     subparsers.add_parser("quota", help="查看配额说明")
 
+    sp_snapshot = subparsers.add_parser(
+        "snapshot-input",
+        help="离线重放已采集的 YouTube snapshot；不访问网络、不发信、不写飞书",
+    )
+    sp_snapshot.add_argument("--input", required=True, help="本地 snapshot JSON")
+    sp_snapshot.add_argument("--output-dir", required=True, help="仓库目录之外的输出目录")
+    sp_snapshot.add_argument(
+        "--strong-ids",
+        action="append",
+        default=[],
+        help="强频道 ID 文件，可重复。只认 channel_id / channel_id_lower，或显式 channel_id 列",
+    )
+    sp_snapshot.add_argument("--brand-exclusion", default="", help="品牌排除 JSON，按频道 ID 或频道名规则")
+    sp_snapshot.add_argument("--theme-keywords-file", default="", help="可选主题关键词，一行一个")
+    sp_snapshot.add_argument("--limit", type=int, default=10, help="短名单上限，1 到 10，默认 10")
+    sp_snapshot.add_argument("--min-subscribers", type=int, default=10000)
+    sp_snapshot.add_argument("--primary-max", type=int, default=50000)
+    sp_snapshot.add_argument("--extended-max", type=int, default=100000)
+    sp_snapshot.add_argument("--min-views", type=int, default=10000)
+    sp_snapshot.add_argument("--min-engagement", type=float, default=3.0)
+    sp_snapshot.add_argument("--filter-mode", choices=["or", "and", "weighted"], default="or")
+    sp_snapshot.add_argument("--no-excel", action="store_true", help="不写 Excel")
+
     sp_upgrade = subparsers.add_parser("feishu-upgrade", help="预览或应用最近视频与邮件字段升级")
     sp_upgrade.add_argument("--feishu-app-token", required=True, help="明确指定已有 Base token 或 URL")
     _add_feishu_auth_args(sp_upgrade)
@@ -1591,6 +1614,10 @@ def main():
         print("用法: python main.py batch --keywords-file keywords.txt")
         print("查看帮助: python main.py --help")
         sys.exit(1)
+
+    if args.command == "snapshot-input":
+        from workflow.snapshot_offline import handle_snapshot_input
+        sys.exit(handle_snapshot_input(args))
 
     # ---- exclusion command ----
     if args.command == "exclusion":

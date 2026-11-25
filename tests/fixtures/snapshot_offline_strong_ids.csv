@@ -1,0 +1,6 @@
+key_type,key_value,display_name,action,evidence_strength
+channel_id,UCsynth00000000000000005,Synthetic Strong,EXCLUDE_TEST,strong
+channel_id_lower,ucsynth00000000000000005,Synthetic Strong Lower,EXCLUDE_TEST,strong
+channel_id,UCsynth00000000000000012,Synthetic Weak,NOTE,name_or_handle_only
+name_normalized,synthetic pass,Synthetic Name,NOTE,name_or_handle_only
+email,synthetic-contact@example.test,Synthetic Email,NOTE,strong
