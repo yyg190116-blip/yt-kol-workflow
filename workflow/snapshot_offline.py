@@ -78,6 +78,15 @@ CANDIDATE_COLUMNS = [
     "nox_status",
     "snapshot_review",
     "snapshot_review_note",
+    "human_review_decision",
+    "human_review_source",
+    "human_review_note",
+    "queue",
+    "recommendation",
+    "creator_identity",
+    "identity_verified",
+    "threshold_exception",
+    "theme_keyword_is_relevance",
     "ready_to_send",
     "evidence_type",
     "trial_bucket",
@@ -114,6 +123,7 @@ class SnapshotOptions:
     strong_id_paths: List[Path] = field(default_factory=list)
     brand_exclusion_path: Optional[Path] = None
     theme_keywords_path: Optional[Path] = None
+    human_review_path: Optional[Path] = None
     limit: int = 10
     min_subscribers: int = 10000
     primary_max: int = 50000
@@ -154,9 +164,11 @@ def handle_snapshot_input(args: Any) -> int:
     print(
         "搜索行 {search_rows}，视频 {unique_videos}，频道 {unique_channels}，"
         "原视频筛选通过 {original_filter_qualified_videos}，"
-        "短名单 {shortlist_written}。".format(**counts)
+        "audit {audit_rows}，复核短名单 {review_shortlist_rows}，"
+        "ready_to_send {ready_to_send_rows}。".format(**counts)
     )
-    print(f"候选 CSV: {summary['outputs']['candidates_csv']}")
+    print(f"audit CSV: {summary['outputs']['audit_csv']}")
+    print(f"复核短名单 CSV: {summary['outputs']['review_shortlist_csv']}")
     print(f"结构 JSON: {summary['outputs']['summary_json']}")
     print(f"报告: {summary['outputs']['report_md']}")
     return 0
@@ -173,12 +185,14 @@ def options_from_args(args: Any) -> SnapshotOptions:
         raise SnapshotUsageError("订阅区间必须满足 0 <= min <= primary_max <= extended_max")
     brand = str(getattr(args, "brand_exclusion", "") or "").strip()
     theme = str(getattr(args, "theme_keywords_file", "") or "").strip()
+    review = str(getattr(args, "human_review", "") or "").strip()
     return SnapshotOptions(
         input_path=Path(args.input),
         output_dir=Path(args.output_dir),
         strong_id_paths=[Path(path) for path in (getattr(args, "strong_ids", None) or [])],
         brand_exclusion_path=Path(brand) if brand else None,
         theme_keywords_path=Path(theme) if theme else None,
+        human_review_path=Path(review) if review else None,
         limit=limit,
         min_subscribers=min_subscribers,
         primary_max=primary_max,
@@ -219,6 +233,7 @@ def run_offline_snapshot(options: SnapshotOptions) -> Dict[str, Any]:
     strong_ids = load_strong_channel_ids(options.strong_id_paths)
     brand = _load_brand_exclusion(options.brand_exclusion_path)
     keywords = _load_keywords(options.theme_keywords_path)
+    human_review = _load_human_review(options.human_review_path)
     primary_label, extended_label = _band_labels(options)
 
     search_rows, search_shape = _normalize_search(snapshot)
@@ -252,23 +267,29 @@ def run_offline_snapshot(options: SnapshotOptions) -> Dict[str, Any]:
         strong_ids=strong_ids,
         keywords=keywords,
         review=review,
+        human_review=human_review,
         options=options,
         primary_label=primary_label,
         extended_label=extended_label,
     )
-    written = shortlist[: options.limit]
-    for row in written:
+    audit_rows = list(shortlist)
+    review_rows = [row for row in audit_rows if row.get("human_review_decision") == "kept"]
+    written_review = review_rows[: options.limit]
+    for row in audit_rows:
         row["strong_id_match"] = "no"
         row["ready_to_send"] = "no"
+        row["creator_identity"] = "UNKNOWN"
+        row["identity_verified"] = "no"
 
     output_dir = options.output_dir.expanduser().resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
-    candidates_path = output_dir / "candidates.csv"
+    audit_path = output_dir / "audit.csv"
+    shortlist_path = output_dir / "review-shortlist.csv"
     summary_path = output_dir / "summary.json"
     report_path = output_dir / "report.md"
     excel_dir = ""
     if options.write_excel:
-        excel_dir = _export_excel(output_dir, videos, written)
+        excel_dir = _export_excel(output_dir, videos, written_review)
 
     strong_id_hits = _snapshot_strong_hits(
         channels,
@@ -277,9 +298,13 @@ def run_offline_snapshot(options: SnapshotOptions) -> Dict[str, Any]:
         primary_label,
         extended_label,
     )
-    public_written = [
+    public_audit = [
         {column: row.get(column, "") for column in CANDIDATE_COLUMNS}
-        for row in written
+        for row in audit_rows
+    ]
+    public_review = [
+        {column: row.get(column, "") for column in CANDIDATE_COLUMNS}
+        for row in written_review
     ]
     counts = _counts(
         search_rows=search_rows,
@@ -288,8 +313,8 @@ def run_offline_snapshot(options: SnapshotOptions) -> Dict[str, Any]:
         qualified=qualified,
         new_channels=new_channels,
         existing_channels=existing_channels,
-        shortlist=shortlist,
-        written=public_written,
+        shortlist=audit_rows,
+        written=public_review,
         strong_ids=strong_ids,
         fidelity=fidelity,
         brand=brand,
@@ -312,26 +337,29 @@ def run_offline_snapshot(options: SnapshotOptions) -> Dict[str, Any]:
         },
         "claimed_counts": snapshot.get("counts") if isinstance(snapshot.get("counts"), dict) else {},
         "search_preferences_are_not_audience": _search_preferences(snapshot),
-        "counts": counts,
+        "counts": _acceptance_counts(counts, public_audit, public_review, human_review, keywords),
         "subscriber_unknown_not_zero": fidelity,
         "strong_id_hits": strong_id_hits,
         "in_band_excluded": excluded_in_band,
         "candidate_columns": list(CANDIDATE_COLUMNS),
-        "candidates": public_written,
+        "audit": public_audit,
+        "review_shortlist": public_review,
         "reused": list(REUSED),
         "adapter": [
             "workflow/snapshot_offline.py",
             "main.py snapshot-input",
             "flat or raw snapshot normalization",
             "hidden or missing subscriberCount stays UNKNOWN and is not written as 0",
-            "strong channel-id index; names, handles and emails are not match keys",
-            "subscriber-band shortlist capped at limit",
+            "strong channel-id exclusion wins over a human kept label",
+            "human kept is the only review shortlist; dropped and not_listed stay in audit",
+            "theme keyword hits are not relevance and do not auto-recommend",
             "audience, native tag, contact history and ready_to_send stay unverified",
         ],
         "not_tested": list(NOT_TESTED),
         "boundaries": _boundaries(),
         "outputs": {
-            "candidates_csv": str(candidates_path),
+            "audit_csv": str(audit_path),
+            "review_shortlist_csv": str(shortlist_path),
             "summary_json": str(summary_path),
             "report_md": str(report_path),
             "excel_dir": excel_dir,
@@ -339,10 +367,102 @@ def run_offline_snapshot(options: SnapshotOptions) -> Dict[str, Any]:
         "command": _format_command(options),
     }
     summary = _scrub(summary)
-    _write_csv(candidates_path, summary["candidates"])
+    _write_csv(audit_path, summary["audit"])
+    _write_csv(shortlist_path, summary["review_shortlist"])
     _write_json(summary_path, summary)
     report_path.write_text(render_report(summary), encoding="utf-8")
     return summary
+
+
+def _load_human_review(path: Optional[Path]) -> Dict[str, Any]:
+    """Load explicit kept/dropped labels. Any other decision is not a pass."""
+    if path is None:
+        return {"provided": False, "by_id": {}}
+    if not path.is_file():
+        raise SnapshotUsageError(f"找不到人工复核文件: {path}")
+    by_id: Dict[str, Dict[str, str]] = {}
+    with path.open(newline="", encoding="utf-8-sig") as handle:
+        reader = csv.DictReader(handle)
+        fields = set(reader.fieldnames or [])
+        if not {"channel_id", "decision"} <= fields:
+            raise SnapshotUsageError("人工复核 CSV 需要 channel_id 和 decision 列")
+        for row in reader:
+            channel_id = str(row.get("channel_id") or "").strip()
+            decision = str(row.get("decision") or "").strip().lower()
+            if not channel_id or decision not in {"kept", "dropped"}:
+                continue
+            by_id[_fold(channel_id)] = {
+                "decision": decision,
+                "reason": str(row.get("reason") or "").strip(),
+                "source": str(row.get("source") or path.name).strip() or path.name,
+            }
+    return {"provided": True, "by_id": by_id, "path": str(path)}
+
+
+def _human_decision(
+    channel_id: str,
+    human_review: Mapping[str, Any],
+    snapshot_review: Mapping[str, Any],
+) -> Tuple[str, str, str]:
+    if human_review.get("provided"):
+        record = (human_review.get("by_id") or {}).get(_fold(channel_id))
+        if not record:
+            return "not_listed", "", ""
+        return record["decision"], record["source"], record["reason"]
+    state, note = _review_for(channel_id, snapshot_review)
+    if state in {"kept", "dropped"}:
+        return state, "snapshot.description_review", note
+    return "not_listed", "", ""
+
+
+def _acceptance_counts(
+    counts: Mapping[str, int],
+    audit: Sequence[Mapping[str, Any]],
+    review: Sequence[Mapping[str, Any]],
+    human_review: Mapping[str, Any],
+    keywords: Sequence[str],
+) -> Dict[str, int]:
+    merged = dict(counts)
+    if human_review.get("provided"):
+        labels = list((human_review.get("by_id") or {}).values())
+        kept_labels = sum(1 for item in labels if item.get("decision") == "kept")
+        dropped_labels = sum(1 for item in labels if item.get("decision") == "dropped")
+    else:
+        kept_labels = sum(1 for row in audit if row.get("human_review_decision") == "kept")
+        dropped_labels = sum(1 for row in audit if row.get("human_review_decision") == "dropped")
+    theme_hits = merged.get("theme_matched_videos") or 0
+    unique_videos = merged.get("unique_videos") or 0
+    merged.update(
+        {
+            "audit_rows": len(audit),
+            "review_shortlist_rows": len(review),
+            "review_shortlist_before_cap": sum(1 for row in audit if row.get("human_review_decision") == "kept"),
+            "shortlist_before_cap": sum(1 for row in audit if row.get("human_review_decision") == "kept"),
+            "shortlist_written": len(review),
+            "shortlist_truncated": max(
+                0,
+                sum(1 for row in audit if row.get("human_review_decision") == "kept") - len(review),
+            ),
+            "ready_to_send_rows": sum(1 for row in audit if str(row.get("ready_to_send")) == "yes"),
+            "human_dropped_in_audit": sum(1 for row in audit if row.get("human_review_decision") == "dropped"),
+            "not_listed_in_audit": sum(1 for row in audit if row.get("human_review_decision") == "not_listed"),
+            "pending_identity_check_not_recommended": sum(
+                1 for row in audit if row.get("queue") == "pending_identity_check_not_recommended"
+            ),
+            "threshold_exceptions_in_shortlist": sum(1 for row in review if row.get("threshold_exception")),
+            "human_review_kept_labels": kept_labels,
+            "human_review_dropped_labels": dropped_labels,
+            "human_review_file_provided": 1 if human_review.get("provided") else 0,
+            "theme_keyword_is_relevance": 0,
+            "theme_filter_discriminative": 0 if unique_videos and theme_hits / unique_videos >= 0.9 else 1,
+            "original_filter_passed_in_shortlist": sum(
+                1 for row in review if row.get("any_video_passed_original_filter") == "yes"
+            ),
+        }
+    )
+    if not keywords:
+        merged["theme_filter_discriminative"] = 0
+    return merged
 
 
 def load_strong_channel_ids(paths: Sequence[Path]) -> StrongIdIndex:
@@ -395,11 +515,21 @@ def render_report(summary: Mapping[str, Any]) -> str:
         f"- 主订阅区间频道: {counts['band_primary_channels']}",
         f"- 扩展订阅区间频道: {counts['band_extended_channels']}",
         f"- 主题命中视频 / 频道: {counts['theme_matched_videos']} / {counts['theme_matched_channels']}",
-        f"- 短名单截断前: {counts['shortlist_before_cap']}",
-        f"- 写出候选: {counts['shortlist_written']}",
-        f"- 因上限未写出: {counts['shortlist_truncated']}",
+        f"- audit 行: {counts['audit_rows']}",
+        f"- 人工 kept 标签: {counts['human_review_kept_labels']}",
+        f"- 人工 dropped 标签: {counts['human_review_dropped_labels']}",
+        f"- audit 中的 dropped: {counts['human_dropped_in_audit']}",
+        f"- audit 中未进入人工复核: {counts['not_listed_in_audit']}",
+        f"- 待身份核查且不推荐: {counts['pending_identity_check_not_recommended']}",
+        f"- 复核短名单: {counts['review_shortlist_rows']}",
+        f"- 短名单中的人工保留例外: {counts['threshold_exceptions_in_shortlist']}",
+        f"- ready_to_send 为 yes 的行: {counts['ready_to_send_rows']}",
         "",
-        "原频道去重只处理通过视频筛选的记录。未达标视频上的强频道 ID 不会出现在那一步的“已有频道”里，但仍会在短名单前被排除。",
+        "audit 是订阅区间内、且没有被强频道 ID 或品牌频道 ID 排除的机械结果。它不是推荐名单。",
+        "只有人工 decision=kept 进入复核短名单。dropped 和 not_listed 不能因主题词或订阅区间回到推荐。",
+        "UNKNOWN 不是通过。创作者身份 UNKNOWN 不会被写成已验证，ready_to_send 固定为 no。",
+        "强频道 ID 和品牌频道 ID 优先于人工 kept。频道名像品牌，不能单独当成官方或达人结论。",
+        "原视频筛选结果保持不变。人工保留但未过自动阈值的人带 human_retained_exception_auto_threshold_not_passed，不改成通过。",
         "历史强频道 ID 没有命中，只表示这张表里没有这条 ID，不表示从未联系。",
         "",
     ]
@@ -408,7 +538,10 @@ def render_report(summary: Mapping[str, Any]) -> str:
         and counts["unique_videos"]
         and counts["theme_matched_videos"] / counts["unique_videos"] >= 0.9
     ):
-        lines.append("这次主题词几乎覆盖全部视频。短名单的实际收窄来自订阅区间、品牌频道 ID 和强频道 ID。")
+        lines.append(
+            "主题词命中率很高，说明它没有区分力。命中主题词不是相关性结论，"
+            "也不能把人工 dropped 的泛内容、非目标语言或地区、无关木工送回复核短名单。"
+        )
         lines.append("")
     lines.extend(["### snapshot 内的强频道 ID 命中", ""])
     strong_hits = summary.get("strong_id_hits") or []
@@ -428,29 +561,35 @@ def render_report(summary: Mapping[str, Any]) -> str:
             lines.append(
                 f"- `{row['channel_id']}` {row['channel_name']}: {row['reason']}"
             )
-    lines.extend(["", "## 候选", ""])
-    candidates = summary.get("candidates") or []
+    lines.extend(["", "## 复核短名单", ""])
+    candidates = summary.get("review_shortlist") or []
     if not candidates:
-        lines.append("无候选。没有为了凑满上限而补充。")
+        lines.append("复核短名单为空。没有把 dropped、not_listed 或 UNKNOWN 补进去。")
     else:
         lines.append(
-            "| channel_id | name | band | subs | original_filter | review | bucket |"
+            "| channel_id | name | band | subs | original_filter | human_review | exception |"
         )
         lines.append("|---|---|---|---|---|---|---|")
         for row in candidates:
             lines.append(
                 "| `{channel_id}` | {channel_name} | {subscriber_band} | {subscriber_count} | "
-                "{original_video_filter} | {snapshot_review} | {trial_bucket} |".format(**row)
+                "{original_video_filter} | {human_review_decision} | {threshold_exception} |".format(**row)
             )
-        review_counts: Dict[str, int] = {}
-        for row in candidates:
-            key = str(row.get("snapshot_review") or "")
-            review_counts[key] = review_counts.get(key, 0) + 1
         lines.append("")
-        lines.append(
-            "候选表保留 snapshot 里已有的人工说明标记，适配器不把自由文本审查自动当成否决。"
-            f" 分布: {review_counts}。"
-        )
+        lines.append("这些行仍是待人工复核，ready_to_send=no。身份字段 UNKNOWN 不是验证通过。")
+    lines.extend(["", "## 不推荐队列", ""])
+    identity_rows = [
+        row for row in (summary.get("audit") or [])
+        if row.get("queue") != "review_shortlist"
+    ]
+    if not identity_rows:
+        lines.append("- 无")
+    else:
+        for row in identity_rows:
+            lines.append(
+                f"- `{row['channel_id']}` {row['channel_name']}: {row['queue']}; "
+                f"human_review={row['human_review_decision']}; creator_identity=UNKNOWN"
+            )
     lines.extend(["", "## 边界", ""])
     for item in summary.get("boundaries") or []:
         lines.append(f"- {item}")
@@ -496,6 +635,7 @@ def _build_shortlist(
     strong_ids: StrongIdIndex,
     keywords: Sequence[str],
     review: Mapping[str, Any],
+    human_review: Mapping[str, Any],
     options: SnapshotOptions,
     primary_label: str,
     extended_label: str,
@@ -563,6 +703,7 @@ def _build_shortlist(
             band=band,
             keywords=keywords,
             review=review,
+            human_review=human_review,
             extended_label=extended_label,
         )
         shortlist.append(row)
@@ -579,6 +720,7 @@ def _candidate_row(
     band: str,
     keywords: Sequence[str],
     review: Mapping[str, Any],
+    human_review: Mapping[str, Any],
     extended_label: str,
 ) -> Dict[str, Any]:
     channel_id = str(channel.get("channel_id") or "")
@@ -593,6 +735,7 @@ def _candidate_row(
     engagement = representative.get("engagement_truth")
     duration_status = str(representative.get("duration_status") or "missing")
     review_state, review_note = _review_for(channel_id, review)
+    decision, review_source, review_reason = _human_decision(channel_id, human_review, review)
     text = _match_text(representative) + " " + str(channel.get("channel_description") or "")
     taxonomy = classify_channel(
         str(channel.get("channel_title") or ""),
@@ -605,11 +748,29 @@ def _candidate_row(
         bucket += "_extended"
     else:
         bucket += "_primary"
+    if decision == "kept" and not passed_any:
+        threshold_exception = "human_retained_exception_auto_threshold_not_passed"
+        bucket = "human_retained_exception_auto_threshold_not_passed"
+        if band == extended_label:
+            bucket += "_extended"
+    else:
+        threshold_exception = ""
+    if decision == "kept":
+        queue = "review_shortlist"
+        recommendation = "review_shortlist"
+    elif decision == "dropped":
+        queue = "human_dropped_not_recommended"
+        recommendation = "not_recommended"
+    else:
+        queue = "pending_identity_check_not_recommended"
+        recommendation = "not_recommended"
     fit = (
-        f"主题关键词命中: {', '.join(hits) if hits else '未启用主题过滤'}; "
+        f"主题关键词命中只是审计线索: {', '.join(hits) if hits else '无'}; "
         f"订阅区间 {band}; 原视频筛选 {'pass' if passed_rep else 'fail'}"
         f"({representative.get('filter_reason') or ''})。"
-        "品牌身份、受众、邮箱、原生标签和联系史未核验。"
+        f"人工复核={decision}。"
+        + (f"{threshold_exception}。" if threshold_exception else "")
+        + "创作者身份保持 UNKNOWN。受众、邮箱、原生标签和联系史未核验。"
     )
     return {
         "channel_id": channel_id,
@@ -658,6 +819,15 @@ def _candidate_row(
         "nox_status": "UNKNOWN",
         "snapshot_review": review_state,
         "snapshot_review_note": review_note,
+        "human_review_decision": decision,
+        "human_review_source": review_source,
+        "human_review_note": review_reason,
+        "queue": queue,
+        "recommendation": recommendation,
+        "creator_identity": "UNKNOWN",
+        "identity_verified": "no",
+        "threshold_exception": threshold_exception,
+        "theme_keyword_is_relevance": "no",
         "ready_to_send": "no",
         "evidence_type": "public_title_and_description_in_local_snapshot",
         "trial_bucket": bucket,
@@ -1280,6 +1450,8 @@ def _boundaries() -> List[str]:
         "50K–100K 只标成扩展区间，不和 10K–50K 混写。",
         "频道名或分类词命中品牌措辞，不会自动改写 brand_channel_check。",
         "原视频筛选默认是播放量大于 10000 或互动率大于 3%。未达标的人不会被算成原筛选通过。",
+        "人工标签来自调用方提供的复核文件，或 snapshot 里已有的 description_review。它不是新的外部核验。",
+        "主题词命中不是内容相关性，也不是推荐理由。",
     ]
 
 
@@ -1366,6 +1538,8 @@ def _format_command(options: SnapshotOptions) -> str:
         parts.extend(["--brand-exclusion", str(options.brand_exclusion_path)])
     if options.theme_keywords_path:
         parts.extend(["--theme-keywords-file", str(options.theme_keywords_path)])
+    if options.human_review_path:
+        parts.extend(["--human-review", str(options.human_review_path)])
     if not options.write_excel:
         parts.append("--no-excel")
     return " ".join(parts)

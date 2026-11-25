@@ -1,0 +1,7 @@
+channel_id,decision,reason,source
+UCsynth00000000000000002,kept,synthetic kept and passes the automatic view threshold,snapshot_offline_human_review.csv
+UCsynth00000000000000001,kept,synthetic kept below the automatic view threshold,snapshot_offline_human_review.csv
+UCsynth00000000000000016,kept,synthetic kept below the automatic view threshold,snapshot_offline_human_review.csv
+UCsynth00000000000000003,dropped,synthetic generic non-target drop,snapshot_offline_human_review.csv
+UCsynth00000000000000005,kept,synthetic kept label loses to a strong channel id,snapshot_offline_human_review.csv
+UCsynth00000000000000012,unknown,synthetic unknown decision must not pass,snapshot_offline_human_review.csv

@@ -1245,7 +1245,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="强频道 ID 文件，可重复。只认 channel_id / channel_id_lower，或显式 channel_id 列",
     )
     sp_snapshot.add_argument("--brand-exclusion", default="", help="品牌排除 JSON，按频道 ID 或频道名规则")
-    sp_snapshot.add_argument("--theme-keywords-file", default="", help="可选主题关键词，一行一个")
+    sp_snapshot.add_argument("--theme-keywords-file", default="", help="可选主题关键词，一行一个。命中不等于推荐")
+    sp_snapshot.add_argument(
+        "--human-review",
+        default="",
+        help="人工复核 CSV：channel_id,decision,reason,source。decision 只认 kept 或 dropped",
+    )
     sp_snapshot.add_argument("--limit", type=int, default=10, help="短名单上限，1 到 10，默认 10")
     sp_snapshot.add_argument("--min-subscribers", type=int, default=10000)
     sp_snapshot.add_argument("--primary-max", type=int, default=50000)
