@@ -5,6 +5,8 @@ output/
 temp/
 *.xlsx
 *.csv
+!tests/fixtures/snapshot_offline_strong_ids.csv
+!tests/fixtures/snapshot_offline_human_review.csv
 *.log
 *.pem
 *.key

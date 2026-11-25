@@ -1,0 +1,3 @@
+# Synthetic theme words. A search query alone must not count as a hit.
+cabinet lock
+smart lock

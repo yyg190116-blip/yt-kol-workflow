@@ -1,0 +1,657 @@
+{
+  "generated_at": "2026-01-15T00:00:00Z",
+  "purpose": "Synthetic offline snapshot fixture. Not a real creator list.",
+  "search_preferences": {
+    "regionCode": "US",
+    "relevanceLanguage": "en",
+    "note": "preference only"
+  },
+  "search_responses": [
+    {
+      "query": "synthetic cabinet lock",
+      "items": [
+        {
+          "videoId": "synthvid001",
+          "channelId": "UCsynth00000000000000001",
+          "channelTitle": "Synthetic Primary",
+          "title": "Synthetic cabinet lock demo",
+          "description": "Buy at https://www.amazon.com/dp/SYNTHETIC1 contact synthetic-contact@example.test",
+          "publishedAt": "2026-01-01T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid002",
+          "channelId": "UCsynth00000000000000002",
+          "channelTitle": "Synthetic Pass",
+          "title": "Synthetic smart lock install",
+          "description": "",
+          "publishedAt": "2026-01-02T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid021",
+          "channelId": "UCsynth00000000000000002",
+          "channelTitle": "Synthetic Pass",
+          "title": "Synthetic smart lock follow up",
+          "description": "",
+          "publishedAt": "2026-01-21T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid003",
+          "channelId": "UCsynth00000000000000003",
+          "channelTitle": "Synthetic Extended",
+          "title": "Synthetic cabinet lock notes",
+          "description": "",
+          "publishedAt": "2026-01-03T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid004",
+          "channelId": "UCsynth00000000000000004",
+          "channelTitle": "Synthetic Brand",
+          "title": "Synthetic smart lock official",
+          "description": "",
+          "publishedAt": "2026-01-04T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid005",
+          "channelId": "UCsynth00000000000000005",
+          "channelTitle": "Synthetic Historical",
+          "title": "Synthetic cabinet lock historical",
+          "description": "",
+          "publishedAt": "2026-01-05T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid006",
+          "channelId": "UCsynth00000000000000006",
+          "channelTitle": "Synthetic Hidden",
+          "title": "Synthetic cabinet lock hidden",
+          "description": "",
+          "publishedAt": "2026-01-06T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid007",
+          "channelId": "UCsynth00000000000000007",
+          "channelTitle": "Synthetic Missing",
+          "title": "Synthetic cabinet lock missing",
+          "description": "",
+          "publishedAt": "2026-01-07T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid008",
+          "channelId": "UCsynth00000000000000008",
+          "channelTitle": "Synthetic Big",
+          "title": "Synthetic cabinet lock big",
+          "description": "",
+          "publishedAt": "2026-01-08T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid009",
+          "channelId": "UCsynth00000000000000009",
+          "channelTitle": "Synthetic Small",
+          "title": "Synthetic cabinet lock small",
+          "description": "",
+          "publishedAt": "2026-01-09T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid010",
+          "channelId": "UCsynth00000000000000010",
+          "channelTitle": "Synthetic Zero",
+          "title": "Synthetic cabinet lock zero",
+          "description": "",
+          "publishedAt": "2026-01-10T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid012",
+          "channelId": "UCsynth00000000000000012",
+          "channelTitle": "Synthetic Weak Id",
+          "title": "Synthetic cabinet lock weak id",
+          "description": "",
+          "publishedAt": "2026-01-12T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid013",
+          "channelId": "UCsynth00000000000000013",
+          "channelTitle": "Synthetic Baking",
+          "title": "Synthetic baking vlog",
+          "description": "cookies only",
+          "publishedAt": "2026-01-13T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid014",
+          "channelId": "UCsynth00000000000000014",
+          "channelTitle": "Synthetic Floor",
+          "title": "Synthetic cabinet lock boundary",
+          "description": "",
+          "publishedAt": "2026-01-14T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid015",
+          "channelId": "UCsynth00000000000000015",
+          "channelTitle": "Synthetic Below Floor",
+          "title": "Synthetic cabinet lock below",
+          "description": "",
+          "publishedAt": "2026-01-15T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid016",
+          "channelId": "UCsynth00000000000000016",
+          "channelTitle": "Synthetic Primary Cap",
+          "title": "Synthetic cabinet lock primary cap",
+          "description": "",
+          "publishedAt": "2026-01-16T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid017",
+          "channelId": "UCsynth00000000000000017",
+          "channelTitle": "Synthetic Extended Floor",
+          "title": "Synthetic cabinet lock extended floor",
+          "description": "",
+          "publishedAt": "2026-01-17T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid018",
+          "channelId": "UCsynth00000000000000018",
+          "channelTitle": "Synthetic Extended Cap",
+          "title": "Synthetic cabinet lock extended cap",
+          "description": "",
+          "publishedAt": "2026-01-18T00:00:00Z"
+        },
+        {
+          "videoId": "synthvid019",
+          "channelId": "UCsynth00000000000000019",
+          "channelTitle": "Synthetic Above Cap",
+          "title": "Synthetic cabinet lock above",
+          "description": "",
+          "publishedAt": "2026-01-19T00:00:00Z"
+        }
+      ],
+      "result_count": 19
+    }
+  ],
+  "videos_responses": [
+    {
+      "items": [
+        {
+          "id": "synthvid002",
+          "snippet": {
+            "channelId": "UCsynth00000000000000002",
+            "channelTitle": "Synthetic Pass",
+            "title": "Synthetic smart lock install",
+            "description": "",
+            "publishedAt": "2026-01-02T00:00:00Z",
+            "tags": [
+              "smart lock"
+            ]
+          },
+          "statistics": {
+            "viewCount": "30000",
+            "likeCount": "100",
+            "commentCount": "20"
+          },
+          "contentDetails": {
+            "duration": "PT5M",
+            "caption": "false"
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "videoId": "synthvid001",
+          "channelId": "UCsynth00000000000000001",
+          "channelTitle": "Synthetic Primary",
+          "title": "Synthetic cabinet lock demo",
+          "description": "Buy at https://www.amazon.com/dp/SYNTHETIC1 contact synthetic-contact@example.test",
+          "publishedAt": "2026-01-01T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 1500,
+          "likeCount": 2,
+          "commentCount": 1
+        },
+        {
+          "videoId": "synthvid021",
+          "channelId": "UCsynth00000000000000002",
+          "channelTitle": "Synthetic Pass",
+          "title": "Synthetic smart lock follow up",
+          "description": "",
+          "publishedAt": "2026-01-21T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 1000,
+          "likeCount": 1,
+          "commentCount": 0
+        },
+        {
+          "videoId": "synthvid003",
+          "channelId": "UCsynth00000000000000003",
+          "channelTitle": "Synthetic Extended",
+          "title": "Synthetic cabinet lock notes",
+          "description": "",
+          "publishedAt": "2026-01-03T00:00:00Z",
+          "duration": "PT24S",
+          "caption": "false",
+          "viewCount": 500,
+          "likeCount": 1,
+          "commentCount": 0
+        },
+        {
+          "videoId": "synthvid004",
+          "channelId": "UCsynth00000000000000004",
+          "channelTitle": "Synthetic Brand",
+          "title": "Synthetic smart lock official",
+          "description": "",
+          "publishedAt": "2026-01-04T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 80000,
+          "likeCount": 10,
+          "commentCount": 1
+        },
+        {
+          "videoId": "synthvid005",
+          "channelId": "UCsynth00000000000000005",
+          "channelTitle": "Synthetic Historical",
+          "title": "Synthetic cabinet lock historical",
+          "description": "",
+          "publishedAt": "2026-01-05T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 80000,
+          "likeCount": 10,
+          "commentCount": 1
+        },
+        {
+          "videoId": "synthvid006",
+          "channelId": "UCsynth00000000000000006",
+          "channelTitle": "Synthetic Hidden",
+          "title": "Synthetic cabinet lock hidden",
+          "description": "",
+          "publishedAt": "2026-01-06T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 20000,
+          "likeCount": 10,
+          "commentCount": 1
+        },
+        {
+          "videoId": "synthvid007",
+          "channelId": "UCsynth00000000000000007",
+          "channelTitle": "Synthetic Missing",
+          "title": "Synthetic cabinet lock missing",
+          "description": "",
+          "publishedAt": "2026-01-07T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 20000,
+          "likeCount": 10,
+          "commentCount": 1
+        },
+        {
+          "videoId": "synthvid008",
+          "channelId": "UCsynth00000000000000008",
+          "channelTitle": "Synthetic Big",
+          "title": "Synthetic cabinet lock big",
+          "description": "",
+          "publishedAt": "2026-01-08T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 20000,
+          "likeCount": 10,
+          "commentCount": 1
+        },
+        {
+          "videoId": "synthvid009",
+          "channelId": "UCsynth00000000000000009",
+          "channelTitle": "Synthetic Small",
+          "title": "Synthetic cabinet lock small",
+          "description": "",
+          "publishedAt": "2026-01-09T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 20000,
+          "likeCount": 10,
+          "commentCount": 1
+        },
+        {
+          "videoId": "synthvid010",
+          "channelId": "UCsynth00000000000000010",
+          "channelTitle": "Synthetic Zero",
+          "title": "Synthetic cabinet lock zero",
+          "description": "",
+          "publishedAt": "2026-01-10T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 20000,
+          "likeCount": 10,
+          "commentCount": 1
+        },
+        {
+          "videoId": "synthvid012",
+          "channelId": "UCsynth00000000000000012",
+          "channelTitle": "Synthetic Weak Id",
+          "title": "Synthetic cabinet lock weak id",
+          "description": "",
+          "publishedAt": "2026-01-12T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 11000,
+          "likeCount": "UNKNOWN",
+          "commentCount": 10
+        },
+        {
+          "videoId": "synthvid013",
+          "channelId": "UCsynth00000000000000013",
+          "channelTitle": "Synthetic Baking",
+          "title": "Synthetic baking vlog",
+          "description": "cookies only",
+          "publishedAt": "2026-01-13T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 20000,
+          "likeCount": 10,
+          "commentCount": 1
+        },
+        {
+          "videoId": "synthvid014",
+          "channelId": "UCsynth00000000000000014",
+          "channelTitle": "Synthetic Floor",
+          "title": "Synthetic cabinet lock boundary",
+          "description": "",
+          "publishedAt": "2026-01-14T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 1000,
+          "likeCount": 1,
+          "commentCount": 0
+        },
+        {
+          "videoId": "synthvid015",
+          "channelId": "UCsynth00000000000000015",
+          "channelTitle": "Synthetic Below Floor",
+          "title": "Synthetic cabinet lock below",
+          "description": "",
+          "publishedAt": "2026-01-15T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 20000,
+          "likeCount": 10,
+          "commentCount": 1
+        },
+        {
+          "videoId": "synthvid016",
+          "channelId": "UCsynth00000000000000016",
+          "channelTitle": "Synthetic Primary Cap",
+          "title": "Synthetic cabinet lock primary cap",
+          "description": "",
+          "publishedAt": "2026-01-16T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 1000,
+          "likeCount": 1,
+          "commentCount": 0
+        },
+        {
+          "videoId": "synthvid017",
+          "channelId": "UCsynth00000000000000017",
+          "channelTitle": "Synthetic Extended Floor",
+          "title": "Synthetic cabinet lock extended floor",
+          "description": "",
+          "publishedAt": "2026-01-17T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 1000,
+          "likeCount": 1,
+          "commentCount": 0
+        },
+        {
+          "videoId": "synthvid018",
+          "channelId": "UCsynth00000000000000018",
+          "channelTitle": "Synthetic Extended Cap",
+          "title": "Synthetic cabinet lock extended cap",
+          "description": "",
+          "publishedAt": "2026-01-18T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 1000,
+          "likeCount": 1,
+          "commentCount": 0
+        },
+        {
+          "videoId": "synthvid019",
+          "channelId": "UCsynth00000000000000019",
+          "channelTitle": "Synthetic Above Cap",
+          "title": "Synthetic cabinet lock above",
+          "description": "",
+          "publishedAt": "2026-01-19T00:00:00Z",
+          "duration": "PT5M",
+          "caption": "false",
+          "viewCount": 20000,
+          "likeCount": 10,
+          "commentCount": 1
+        }
+      ]
+    }
+  ],
+  "channels_responses": [
+    {
+      "items": [
+        {
+          "channelId": "UCsynth00000000000000001",
+          "title": "Synthetic Primary",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "US",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 20000
+        },
+        {
+          "channelId": "UCsynth00000000000000002",
+          "title": "Synthetic Pass",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 30000
+        },
+        {
+          "channelId": "UCsynth00000000000000003",
+          "title": "Synthetic Extended",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 80000
+        },
+        {
+          "channelId": "UCsynth00000000000000004",
+          "title": "Synthetic Brand",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 40000
+        },
+        {
+          "channelId": "UCsynth00000000000000005",
+          "title": "Synthetic Historical",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 40000
+        },
+        {
+          "channelId": "UCsynth00000000000000007",
+          "title": "Synthetic Missing",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10
+        },
+        {
+          "channelId": "UCsynth00000000000000008",
+          "title": "Synthetic Big",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 150000
+        },
+        {
+          "channelId": "UCsynth00000000000000009",
+          "title": "Synthetic Small",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 500
+        },
+        {
+          "channelId": "UCsynth00000000000000010",
+          "title": "Synthetic Zero",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 0
+        },
+        {
+          "channelId": "UCsynth00000000000000012",
+          "title": "Synthetic Weak Id",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "CA",
+          "description": "This is the official brand channel of Synthetic.",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 21000
+        },
+        {
+          "channelId": "UCsynth00000000000000013",
+          "title": "Synthetic Baking",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 21000
+        },
+        {
+          "channelId": "UCsynth00000000000000014",
+          "title": "Synthetic Floor",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 10000
+        },
+        {
+          "channelId": "UCsynth00000000000000015",
+          "title": "Synthetic Below Floor",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 9999
+        },
+        {
+          "channelId": "UCsynth00000000000000016",
+          "title": "Synthetic Primary Cap",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 50000
+        },
+        {
+          "channelId": "UCsynth00000000000000017",
+          "title": "Synthetic Extended Floor",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 50001
+        },
+        {
+          "channelId": "UCsynth00000000000000018",
+          "title": "Synthetic Extended Cap",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 100000
+        },
+        {
+          "channelId": "UCsynth00000000000000019",
+          "title": "Synthetic Above Cap",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "country": "",
+          "description": "",
+          "hiddenSubscribers": false,
+          "viewCount": 1000,
+          "videoCount": 10,
+          "subscriberCount": 100001
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "id": "UCsynth00000000000000006",
+          "snippet": {
+            "title": "Synthetic Hidden",
+            "description": "",
+            "publishedAt": "2020-01-01T00:00:00Z",
+            "country": "US"
+          },
+          "statistics": {
+            "hiddenSubscriberCount": true,
+            "subscriberCount": "99999",
+            "viewCount": "1000",
+            "videoCount": "10"
+          },
+          "contentDetails": {
+            "relatedPlaylists": {}
+          }
+        }
+      ]
+    }
+  ],
+  "description_review": {
+    "kept_channel_ids": [
+      "UCsynth00000000000000001"
+    ],
+    "dropped": {
+      "UCsynth00000000000000003": "synthetic drop reason"
+    }
+  }
+}

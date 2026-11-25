@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- `snapshot-input` 可离线重放本地 YouTube API snapshot，复用视频解析、视频筛选、频道查重和 Excel 导出。命令不访问网络，不发信，不写飞书；隐藏或缺失的订阅数保持 UNKNOWN。
+- 机械结果写入 `audit.csv`。只有人工复核文件里的 `kept` 进入 `review-shortlist.csv`；`dropped`、未标注和 UNKNOWN 不自动推荐。强频道 ID 优先于人工 kept。未过原视频阈值的人工保留会显式标成例外，不改成筛选通过。`ready_to_send` 固定为 no。
+
 ## [0.3.0] - 2026-09-27
 
 ### Added
